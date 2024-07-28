@@ -32,12 +32,23 @@ todoList.addEventListener('click', function (e) {
 	} else if (e.target.tagName === 'BUTTON') { // remove item from array, remove from localStorage, push new array to localStorage
 		e.target.parentNode.remove();
 
+		for (let i = 0; i < todosArray.length; i++) {
+
+			todosArray[i].isCompleted === true;
+
+			console.log(todosArray[i])
+		}
 
 
-		const newArray = arrayOfTodos.filter((todo) => todo.isCompleted !== false);
 
 
-		// Put back the "newArray" to localStorage: hint: JSON.stringify(), localStorage.setItem(??, ??);
+		//  filter out todos that ARE completed
+		const newArray = todosArray.filter((todo) => todo.isCompleted !== true);
+		console.log(newArray)
+
+
+
+		// Put back the "newArray" to localStorage
 		localStorage.setItem('todos', JSON.stringify(newArray));
 
 	}
