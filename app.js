@@ -1,73 +1,55 @@
-// // ! removing todos from array
-// todoList.addEventListener('click', function (e) {
-// 	if (e.target.tagName === 'LI') { // if click on li, add styles
-// 		e.target.style.textDecoration = "line-through";
-// 		e.target.style.color = "gray";
-
-
-// 	} else if (e.target.tagName === 'BUTTON') { // remove item from array, remove from localStorage, push new array to localStorage
-// 		e.target.parentNode.remove();
-
-// 		for (let i = 0; i < todosArray.length; i++) {
-
-// 			todosArray[i].isCompleted === true;
-
-// 			console.log(todosArray[i])
-// 		}
-
-
-
-
-// 		//  filter out todos that ARE completed
-// 		const newArray = todosArray.filter((todo) => todo.isCompleted !== true);
-// 		console.log(newArray)
-
-
-
-// 		// Put back the "newArray" to localStorage
-// 		localStorage.setItem('todos', JSON.stringify(newArray));
-
-// 	}
-// });
-
-
 // ! code start
 const todoList = document.querySelector(".todo-list"); // create variable ul where todos will be displayed
 const todoListForm = document.querySelector(".todo-list-form"); // create variable for form where todos are being submitted
 let todoArray; // create variable for array of todos
 
-// ! check to see if there are any todos saved in localStorage, if yes display
+// ! check to see if there are any todos saved in localStorage
 if (localStorage.todos) {
 	todoArray = JSON.parse(localStorage.todos);
 } else {
 	todoArray = [];
 }
 
-// ! for every todo that is in todoArray, run addTodoToList
+// ! display todos -- for every todo that is in todoArray, run addTodoToList
 for (let todo of todoArray) {
-	addTodoToList(todo);
+	addTodoToList(todo.value, todo.completed); // uses todo object.value key
 }
 
-
-// ! create event listener on todoListForm sumbit to run fn handleSubmit
+// ! create event listener on todoListForm sumbit and run handleSubmit()
 todoListForm.addEventListener("submit", handleSubmit);
 
+// ! on submit, take todoValue and pass to addToLocalStorage() and addTodoToList()
 function handleSubmit(e) {
 	e.preventDefault();
-
-	// create span > li > innertext with form entry value
 	const todoValue = document.querySelector(".todo-entry-input").value;
 	addToLocalStorage(todoValue); // ***** add new todoValue to localStorage *****
+	addTodoToList(todoValue); // create span > li > innertext with form entry value
+	todoListForm.reset();
+}
+
+// ! create span > li > innertext with form entry value
+function addTodoToList(todoValue, completed = false) {
+	// create span > li > innertext with form entry value 
 	const todoListItem = document.createElement("li");
+	if (completed) {
+		todoListItem.classList.add("completed");
+	}
 	const todoListItemText = document.createElement("span");
 	todoListItemText.innerText = todoValue;
 	todoListItem.appendChild(todoListItemText);
 	todoList.appendChild(todoListItem);
-	todoListForm.reset();
+
 
 	// add event listener to each new li that will add/remove the class "completed" on click
 	todoListItem.addEventListener("click", function () {
 		todoListItem.classList.toggle("completed");
+		for (let todo of todoArray) { // loop through todoArray
+			if (todo.value === todoValue) { // if todo.value === todoValue, flip the completed boolean
+				todo.completed = !todo.completed;
+				break;
+			}
+		}
+		localStorage.setItem("todos", JSON.stringify(todoArray));  // ***** update localStorage *****
 	});
 
 	// create delete button to beginning of each li
@@ -79,19 +61,24 @@ function handleSubmit(e) {
 		deleteBtn.parentElement.remove(); //remove the li parent item on click
 		removeFromLocalStorage(todoValue); // ***** remove todoValue from localStorage *****
 	});
+
 	todoListItem.prepend(deleteBtn);
+
 }
 
 // ! add to localStorage
 function addToLocalStorage(todoValue) {
-	todoArray.push(todoValue); // add each new todo to the todoArray
+	todoArray.push({ // creates an array of objects -- includes each todoValue and if it is completed or not. Completed status is in relation to the class "completed" which is toggled on and off li click
+		value: todoValue,
+		completed: false,
+	}); // add each new todo to the todoArray
 	localStorage.setItem("todos", JSON.stringify(todoArray)); // set the todoArray as the value of "todos" as a string in localStorage
 }
 
 // ! remove from localStorage
 function removeFromLocalStorage(todoValue) {
 	for (let i = 0; i < todoArray.length; i++) { //loop through todoArray to find the index of the matching todo and remove it from the todoArray
-		if (todoArray[i] === todoValue) {
+		if (todoArray[i].value === todoValue) { // compares todo object.value key
 			todoArray.splice(i, 1);
 			break;
 		}
