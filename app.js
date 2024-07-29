@@ -1,11 +1,5 @@
-// const form = document.querySelector('#todoForm');
-// const input = document.querySelector('#task');
-// const todoList = document.querySelector('#todoList');
-
 // //! retrieve from localStorage if there are items stored
 // const todosArray = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
-
-// console.log(todosArray)
 
 
 // // ! display tasks
@@ -78,6 +72,7 @@
 // ! code start
 const todoList = document.querySelector(".todo-list"); // create variable ul where todos will be displayed
 const todoListForm = document.querySelector(".todo-list-form"); // create variable for form where todos are being submitted
+let todoArray = []; // create variable for array of todos
 
 // ! create event listener on todoListForm sumbit to run fn handleSubmit
 todoListForm.addEventListener("submit", handleSubmit);
@@ -87,6 +82,11 @@ function handleSubmit(e) {
 
 	// create span > li > innertext with form entry value
 	const todoValue = document.querySelector(".todo-entry-input").value;
+
+	todoArray.push(todoValue); // add each new todo to the todo array
+	localStorage.setItem("todos", JSON.stringify(todoArray)); // set the todo array as the value of "todos" as a string in local storage
+
+
 	const todoListItem = document.createElement("li");
 	const todoListItemText = document.createElement("span");
 	todoListItemText.innerText = todoValue;
@@ -99,8 +99,11 @@ function handleSubmit(e) {
 		todoListItem.classList.toggle("completed");
 	});
 
+	// create delete button to beginning of each li
 	const deleteBtn = document.createElement("button");
 	deleteBtn.innerText = "X";
+
+	// add event listener to each deleteBtn that will remove the li parent item on click
 	deleteBtn.addEventListener("click", function () {
 		deleteBtn.parentElement.remove();
 	});
