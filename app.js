@@ -99,5 +99,10 @@ function handleSubmit(e) {
 		todoListItem.classList.toggle("completed");
 	});
 
-
+	const deleteBtn = document.createElement("button");
+	deleteBtn.innerText = "X";
+	deleteBtn.addEventListener("click", function () {
+		deleteBtn.parentElement.remove();
+	});
+	todoListItem.prepend(deleteBtn);
 }
