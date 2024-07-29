@@ -82,11 +82,8 @@ function handleSubmit(e) {
 
 	// create span > li > innertext with form entry value
 	const todoValue = document.querySelector(".todo-entry-input").value;
-
-	todoArray.push(todoValue); // add each new todo to the todo array
-	localStorage.setItem("todos", JSON.stringify(todoArray)); // set the todo array as the value of "todos" as a string in local storage
-
-
+	todoArray.push(todoValue); // add each new todo to the todoArray
+	localStorage.setItem("todos", JSON.stringify(todoArray)); // set the todoArray as the value of "todos" as a string in localStorage
 	const todoListItem = document.createElement("li");
 	const todoListItemText = document.createElement("span");
 	todoListItemText.innerText = todoValue;
@@ -103,9 +100,17 @@ function handleSubmit(e) {
 	const deleteBtn = document.createElement("button");
 	deleteBtn.innerText = "X";
 
-	// add event listener to each deleteBtn that will remove the li parent item on click
+	// add event listener - remove items and update todoArray and localStorage
 	deleteBtn.addEventListener("click", function () {
-		deleteBtn.parentElement.remove();
+		deleteBtn.parentElement.remove(); //remove the li parent item on click
+
+		for (let i = 0; i < todoArray.length; i++) { //loop through todoArray to find the index of the matching todo and remove it from the todoArray
+			if (todoArray[i] === todoValue) {
+				todoArray.splice(i, 1);
+				break;
+			}
+		}
+		localStorage.setItem("todos", JSON.stringify(todoArray)); // update localStorage
 	});
 	todoListItem.prepend(deleteBtn);
 }
