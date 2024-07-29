@@ -34,7 +34,20 @@
 // ! code start
 const todoList = document.querySelector(".todo-list"); // create variable ul where todos will be displayed
 const todoListForm = document.querySelector(".todo-list-form"); // create variable for form where todos are being submitted
-let todoArray = []; // create variable for array of todos
+let todoArray; // create variable for array of todos
+
+// ! check to see if there are any todos saved in localStorage, if yes display
+if (localStorage.todos) {
+	todoArray = JSON.parse(localStorage.todos);
+} else {
+	todoArray = [];
+}
+
+// ! for every todo that is in todoArray, run addTodoToList
+for (let todo of todoArray) {
+	addTodoToList(todo);
+}
+
 
 // ! create event listener on todoListForm sumbit to run fn handleSubmit
 todoListForm.addEventListener("submit", handleSubmit);
