@@ -84,6 +84,8 @@ todoListForm.addEventListener("submit", handleSubmit);
 
 function handleSubmit(e) {
 	e.preventDefault();
+
+	// create span > li > innertext with form entry value
 	const todoValue = document.querySelector(".todo-entry-input").value;
 	const todoListItem = document.createElement("li");
 	const todoListItemText = document.createElement("span");
@@ -91,4 +93,11 @@ function handleSubmit(e) {
 	todoListItem.appendChild(todoListItemText);
 	todoList.appendChild(todoListItem);
 	todoListForm.reset();
+
+	// add event listener to each new li that will add/remove the class "completed" on click
+	todoListItem.addEventListener("click", function () {
+		todoListItem.classList.toggle("completed");
+	});
+
+
 }
