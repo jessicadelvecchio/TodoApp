@@ -9,12 +9,28 @@
   </head>
 
   <body>
-    <form action="" id="todoForm">
+    <!-- <form action="" id="todoForm">
       <label for="task">To Do:</label>
       <input type="text" id="task" />
       <button>Add Item</button>
     </form>
-    <ul id="todoList"></ul>
+    <ul id="todoList"></ul> -->
+
+    <!-- using another class structure -->
+    <div class="todo-list-container">
+      <h1>My Todo List</h1>
+      <form class="todo-list-form">
+        <label for="todo-entry">New Todo:</label>
+        <input
+          autofocus
+          class="todo-entry-input"
+          name="todo-entry"
+          type="text"
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <ol class="todo-list"></ol>
+    </div>
 
     <script src="app.js"></script>
   </body>
